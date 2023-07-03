@@ -7,13 +7,18 @@ const store = new Vuex.Store({
     mutations: {
       ADD_TASK(state) {
         if (state.newTask.trim() !== "") {
-          state.tasks.push(state.newTask);
+          state.tasks.push({
+            title: state.newTask,
+            completed: false,
+            time: new Date().toLocaleString()
+          });
           state.newTask = "";
         }
       },
       EDIT_TASK(state, { index, task }) {
         if (task.trim() !== "") {
-          state.tasks.splice(index, 1, task);
+          state.tasks[index].title = task;
+          state.tasks[index].time = new Date().toLocaleString();
         }
       },
       DELETE_TASK(state, index) {
@@ -55,7 +60,7 @@ const store = new Vuex.Store({
         this.$store.dispatch("addTask");
       },
       editTask(index) {
-        const task = prompt("Edit the task", this.tasks[index]);
+        const task = prompt("Edit the task", this.tasks[index].title);
         this.$store.dispatch("editTask", { index, task });
       },
       deleteTask(index) {
@@ -63,4 +68,4 @@ const store = new Vuex.Store({
       }
     }
   });
-  
+    
